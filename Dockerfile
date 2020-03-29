@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-MAINTAINER Ramazan APAYDIN <apaydin541@gmail.com>
+LABEL maintainer="Ramazan APAYDIN <apaydin541@gmail.com>"
 
 # Install PowerDNS & SQLite Backend
 RUN apk --update --no-cache add pdns pdns-backend-sqlite3 && \
@@ -12,14 +12,15 @@ RUN mkdir /pdns && \
     chown -R pdns:pdns /pdns
 
 # Copy Configuration
-ADD ./pdns/schema.sql ./pdns/entrypoint.sh /pdns/
-ADD ./pdns/pdns.conf /etc/pdns/
+ADD ./schema.sql /
+ADD ./entrypoint.sh /
+ADD ./pdns.conf /etc/pdns/
 
 RUN mkdir -p /var/empty/var/run/ && \
-    chmod +x /pdns/entrypoint.sh
+    chmod +x /entrypoint.sh
 
 # Ports
 EXPOSE 53/udp 53/tcp
 
 # Service Start
-CMD ["/pdns/entrypoint.sh"]
+CMD ["/entrypoint.sh"]

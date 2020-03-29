@@ -1,14 +1,15 @@
 #!/usr/bin/env sh
 
-SQL_SCHEMA=/pdns/schema.sql
+SQL_SCHEMA=/schema.sql
+DB_TABLE=/pdns/pdns_db.sqlite
 
 # Import DB Schema Structure
-if [[ -f ${SQL_SCHEMA} ]]; then
+if [[ ! -f ${DB_TABLE} ]]; then
 	echo "<< Creating database schema.. >>"
 	sqlite3 /pdns/pdns_db.sqlite < ${SQL_SCHEMA}
 	chmod 755 -R /pdns/pdns_db.sqlite
 	chown -R pdns:pdns /pdns/pdns_db.sqlite
-	rm ${SQL_SCHEMA}
+	#rm ${SQL_SCHEMA}
 	echo "<< Done >>"
 else
 	echo "<< Database Ready! >>"
